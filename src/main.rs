@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 use std::process::{Command};
 
 mod actions;
-use crate::actions::git::{Branch, git_push};
+use crate::actions::git::{Branch, git_push, git_pull};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
