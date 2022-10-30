@@ -72,7 +72,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "lee-cmd"
+name = "lee"
 version = "0.1.0"
 dependencies = [
  "clap",
