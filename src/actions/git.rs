@@ -44,13 +44,13 @@ pub fn excute_git_command(args: &Option<String>, action: &str) {
         Ok(output_info) => {
             if !output_info.status.success() {
                 let raw_output = String::from_utf8(output_info.stderr).unwrap();
-                println!("push fail cause by {}", raw_output);
+                println!("git command failed cause by {}", raw_output);
                 return;
             }
-            println!("push success!!!",);
+            println!("git command run success!!!",);
         }
         Err(err) => {
-            panic!("git push fail cause by {}", err);
+            panic!("git command run failed cause by {}", err);
         }
     }
 }
