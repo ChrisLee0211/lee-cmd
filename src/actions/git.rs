@@ -26,6 +26,7 @@ pub fn git_pull(args: &Option<String> ){
 pub fn git_commit(msg: &String) -> Result<(), String> {
     let commit_output = Command::new("git").args(["commit","-m",msg]).output().expect("fail to commit");
     if commit_output.status.success() {
+        println!("git commit successs!!");
         Ok(())
     } else {
         Err(String::from_utf8(commit_output.stderr).unwrap())
