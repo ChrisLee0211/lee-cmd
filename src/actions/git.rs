@@ -1,4 +1,4 @@
-use std::{process::Command};
+use std::{process::Command, io::Error};
 use clap::{Args};
 
 
@@ -15,8 +15,9 @@ pub struct Message {
     pub message: String
 }
 
-pub fn git_push(args: &Option<String>) {
-    excute_git_command(args, "push");
+pub fn git_push(args: &Option<String>) -> Result<(), String> {
+   let excute_reuslt = excute_git_command(args, "push");
+    excute_reuslt
 }
 
 pub fn git_pull(args: &Option<String> ){
@@ -33,11 +34,26 @@ pub fn git_commit(msg: &String) -> Result<(), String> {
     }
 }
 
+pub fn cancel_commit() -> Result<(), String> {
+    let cancel_result = Command::new("git")
+        .args(["reset", "--soft", "HEAD^"])
+        .output().expect("reset last git commit failed");
+        if cancel_result.status.success() {
+            println!("reset last commit success!! please try again~");
+            Ok(())
+        } else {
+            Err(String::from_utf8(cancel_result.stderr).unwrap())
+        }
+}
+
 pub fn git_commit_auto_push(msg: &String) {
     let commit_result = git_commit(msg);
     match commit_result {
         Ok(()) => {
-            git_push(&None)
+            let git_push_result = git_push(&None);
+            if git_push_result.is_err() {
+                cancel_commit();
+            }
         }
         Err(err) => {
             panic!("git command run failed cause by {}", err);
@@ -63,22 +79,26 @@ pub fn format_branch(args: &Option<String>) -> String {
     }
 }
 
-pub fn excute_git_command(args: &Option<String>, action: &str) {
+pub fn excute_git_command(args: &Option<String>, action: &str) -> Result<(), String> {
     let branch = format_branch(args);
     let output = Command::new("git")
-        .args([action, "origin", &branch])
+        .args([&action, "origin", &branch])
         .output();
     match output {
         Ok(output_info) => {
             if !output_info.status.success() {
                 let raw_output = String::from_utf8(output_info.stderr).unwrap();
                 println!("git command failed cause by {}", raw_output);
-                return;
+                Err(raw_output)
+            } else {
+                println!("git command run success!!!",);
+                Ok(())
             }
-            println!("git command run success!!!",);
         }
         Err(err) => {
-            panic!("git command run failed cause by {}", err);
+            let msg = err.to_string();
+            println!("git command run failed cause by {}", &msg);
+            Err(msg)
         }
     }
 }

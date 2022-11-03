@@ -29,16 +29,16 @@ fn main() {
 
     match &cli.action {
         Action::PH(Branch { branch }) => {
-            git_push(&branch)
+            git_push(&branch);
         }
         Action::PL(Branch { branch }) => {
-            git_pull(&branch)
+            git_pull(&branch);
         }
         Action::CPH(Message { message }) => {
-            git_commit_auto_push(message)
+            git_commit_auto_push(message);
         }
         Action::RC => {
-            remove_cargo_cache()
+            remove_cargo_cache();
         }
     }
 }
