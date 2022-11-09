@@ -15,6 +15,15 @@ pub struct Message {
     pub message: String
 }
 
+pub fn git_add() -> Result<(), String>{
+    let commit_output = Command::new("git").args(["add","."]).output().expect("fail to add");
+    if commit_output.status.success() {
+        Ok(())
+    }else {
+        Err(String::from_utf8(commit_output.stderr).unwrap())
+    }
+}
+
 pub fn git_push(args: &Option<String>) -> Result<(), String> {
    let excute_reuslt = excute_git_command(args, "push");
     excute_reuslt
@@ -47,6 +56,7 @@ pub fn cancel_commit() -> Result<(), String> {
 }
 
 pub fn git_commit_auto_push(msg: &String) {
+    git_add().expect("fail to run git add!");
     let commit_result = git_commit(msg);
     match commit_result {
         Ok(()) => {
