@@ -1,4 +1,4 @@
-use std::{process::Command, io::Error};
+use std::{process::Command};
 use clap::{Args};
 
 
@@ -18,6 +18,7 @@ pub struct Message {
 pub fn git_add() -> Result<(), String>{
     let commit_output = Command::new("git").args(["add","."]).output().expect("fail to add");
     if commit_output.status.success() {
+        println!("git add successs!!");
         Ok(())
     }else {
         Err(String::from_utf8(commit_output.stderr).unwrap())
@@ -30,7 +31,7 @@ pub fn git_push(args: &Option<String>) -> Result<(), String> {
 }
 
 pub fn git_pull(args: &Option<String> ){
-    excute_git_command(args, "pull");
+    excute_git_command(args, "pull").expect("fail to run git pull");
 }
 
 pub fn git_commit(msg: &String) -> Result<(), String> {
@@ -62,7 +63,7 @@ pub fn git_commit_auto_push(msg: &String) {
         Ok(()) => {
             let git_push_result = git_push(&None);
             if git_push_result.is_err() {
-                cancel_commit();
+                cancel_commit().expect("git reset fail~");
             }
         }
         Err(err) => {
