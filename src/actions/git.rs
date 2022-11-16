@@ -1,7 +1,7 @@
 use std::{process::Command};
 use clap::{Args};
-
-
+use clipboard::ClipboardProvider;
+use clipboard::ClipboardContext;
 
 #[derive(Args, Debug)]
 pub struct Branch {
@@ -112,4 +112,10 @@ pub fn excute_git_command(args: &Option<String>, action: &str) -> Result<(), Str
             Err(msg)
         }
     }
+}
+
+pub fn get_and_copy_current_branch() {
+    let branch_name = format_branch(&None);
+
+    
 }

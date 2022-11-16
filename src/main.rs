@@ -20,7 +20,9 @@ enum Action {
     /// git commit -m "something" and auto git push origin xxx
     CPH(Message),
     /// remove cargo cache
-    RC
+    RC,
+    /// copy current git branch name
+    BR
 }
 
 
@@ -39,6 +41,9 @@ fn main() {
         }
         Action::RC => {
             remove_cargo_cache();
+        }
+        Action::BR => {
+            
         }
     }
 }
