@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 
 mod actions;
-use crate::actions::git::{Branch, Message, git_push, git_pull, git_commit_auto_push};
+use crate::actions::git::{Branch, Message, git_push, git_pull, git_commit_auto_push, get_and_copy_current_branch};
 use crate::actions::common::remove_cargo_cache;
 
 #[derive(Parser, Debug)]
@@ -43,7 +43,7 @@ fn main() {
             remove_cargo_cache();
         }
         Action::BR => {
-            
+            get_and_copy_current_branch()
         }
     }
 }

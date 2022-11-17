@@ -2,6 +2,7 @@ use std::{process::Command};
 use clap::{Args};
 use clipboard::ClipboardProvider;
 use clipboard::ClipboardContext;
+use std::error::Error;
 
 #[derive(Args, Debug)]
 pub struct Branch {
@@ -114,8 +115,21 @@ pub fn excute_git_command(args: &Option<String>, action: &str) -> Result<(), Str
     }
 }
 
-pub fn get_and_copy_current_branch() {
-    let branch_name = format_branch(&None);
+pub fn copy_to_clipboard(target: &String) -> Result<(), Box<dyn Error>> {
+    let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
+    ctx.set_contents(target.to_string())
 
-    
+}
+
+pub fn get_and_copy_current_branch()  {
+    let branch_name = format_branch(&None);
+    let copy_result = copy_to_clipboard(&branch_name);
+    match copy_result {
+        Ok(()) => {
+            println!("already copy {:?} in paste", &branch_name);
+        },
+        Err(err) => {
+            println!("fail to copy {:?} in paste, casue by {:?}", &branch_name, err);
+        }
+    }
 }
