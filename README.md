@@ -16,3 +16,15 @@ lee ph
 ```
 lee pl
 ```
+- git add & commit & push origin branch
+```
+lee cph -m "xxxx"
+```
+- copy current branch name
+```
+lee br
+```
+- remove cargo cache
+```
+lee rc
+```
