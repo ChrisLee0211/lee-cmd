@@ -2,7 +2,7 @@ use clap::{Parser, Subcommand};
 
 mod actions;
 use crate::actions::git::{Branch, Message, git_push, git_pull, git_commit_auto_push, get_and_copy_current_branch};
-use crate::actions::common::remove_cargo_cache;
+use crate::actions::common::{remove_cargo_cache, kill_specified_port, PORT};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -22,7 +22,9 @@ enum Action {
     /// remove cargo cache
     RC,
     /// copy current git branch name
-    BR
+    BR,
+    /// kill specified port
+    KP(PORT)
 }
 
 
@@ -44,6 +46,9 @@ fn main() {
         }
         Action::BR => {
             get_and_copy_current_branch()
+        }
+        Action::KP(PORT {port}) => {
+            kill_specified_port(port);
         }
     }
 }
