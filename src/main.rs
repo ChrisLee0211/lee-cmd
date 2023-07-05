@@ -1,3 +1,4 @@
+use actions::common::get_public_ip;
 use clap::{Parser, Subcommand};
 
 mod actions;
@@ -24,7 +25,9 @@ enum Action {
     /// copy current git branch name
     BR,
     /// kill specified port
-    KP(PORT)
+    KP(PORT),
+    /// get public Ip
+    IP
 }
 
 
@@ -49,6 +52,9 @@ fn main() {
         }
         Action::KP(PORT {port}) => {
             kill_specified_port(port);
+        }
+        Action::IP => {
+            get_public_ip();
         }
     }
 }

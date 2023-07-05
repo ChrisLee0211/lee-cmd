@@ -28,3 +28,8 @@ lee br
 ```
 lee rc
 ```
+
+# How to test
+```
+./target/debug/lee {your command}
+```

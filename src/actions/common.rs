@@ -1,5 +1,8 @@
 use std::{process::Command, io::{Error, ErrorKind}};
 use clap::{Args};
+use reqwest::{self, header::HeaderMap};
+use serde::Deserialize;
+
 
 pub fn remove_cargo_cache() {
     let output = Command::new("rm").args(["-rf", "~/.cargo/.package-cache"]).output();
@@ -43,4 +46,21 @@ pub fn kill_specified_port(port: &String) {
             panic!("remove fail cause by {}", err);
         }
     }
+}
+
+#[derive(Deserialize)]
+struct Ip {
+    origin: String,
+}
+
+#[tokio::main]
+pub async fn get_public_ip() {
+    let resp = reqwest::get("https://httpbin.org/ip")
+        .await
+        .expect("Fail to get public ip")
+        .json::<Ip>()
+        .await
+        .expect("Fail to transfer Json");
+
+    println!("current public ip is {:#?}", resp.origin);
 }
