@@ -20,6 +20,8 @@ enum Action {
     PH(Branch),
     /// git commit -m "something" and auto git push origin xxx
     CPH(Message),
+    /// git checkout -b "branch name"
+    CB(Branch),
     /// remove cargo cache
     RC,
     /// copy current git branch name
@@ -43,6 +45,9 @@ fn main() {
         }
         Action::CPH(Message { message }) => {
             git_commit_auto_push(message);
+        }
+        Action::CB(Branch {branch}) => {
+            
         }
         Action::RC => {
             remove_cargo_cache();
