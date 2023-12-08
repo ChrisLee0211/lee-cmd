@@ -1,4 +1,5 @@
 use actions::common::get_public_ip;
+use actions::git::create_new_branch;
 use clap::{Parser, Subcommand};
 
 mod actions;
@@ -47,7 +48,7 @@ fn main() {
             git_commit_auto_push(message);
         }
         Action::CB(Branch {branch}) => {
-            
+            create_new_branch(branch)
         }
         Action::RC => {
             remove_cargo_cache();

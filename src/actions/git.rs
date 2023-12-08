@@ -133,3 +133,30 @@ pub fn get_and_copy_current_branch()  {
         }
     }
 }
+
+pub fn create_new_branch(branch: &Option<String>) {
+    match branch {
+        Some(branch_name) => {
+            let action = "checkout";
+            let output = Command::new("git")
+            .args([action, "-b", branch_name])
+            .output();
+            match output {
+                Ok(output_info) => {
+                    if !output_info.status.success() {
+                        let raw_output = String::from_utf8(output_info.stderr).unwrap();
+                        println!("git command failed cause by {}", raw_output);
+                    } else {
+                        println!("git command run success!!!",);
+                    }
+                },
+                Err(err) => {
+                    println!("fail to create branch, cause by {:?}", err)
+                }
+            }
+        },
+        None => {
+            println!("need a name to create branch!");
+        }
+    }
+}
