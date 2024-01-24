@@ -24,9 +24,17 @@ lee cph -m "xxxx"
 ```
 lee br
 ```
+- create new branch
+```
+lee cb -b branch-name
+```
 - remove cargo cache
 ```
 lee rc
+```
+- check local public ip
+```
+lee ip
 ```
 
 # How to test
